@@ -1,1 +1,29 @@
-// Added feature 1
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+    }
+
+    post {
+        success {
+            emailext (
+                to: 'your_email@gmail.com',
+                subject: "SUCCESS: Jenkins Build ${env.JOB_NAME}",
+                body: "Build Successful. URL: ${env.BUILD_URL}"
+            )
+        }
+
+        failure {
+            emailext (
+                to: 'your_email@gmail.com',
+                subject: "FAILED: Jenkins Build ${env.JOB_NAME}",
+                body: "Build Failed. URL: ${env.BUILD_URL}"
+            )
+        }
+    }
+}
