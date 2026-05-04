@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                dir('Amazon') {
+                    sh 'mvn clean package'
+                }
             }
         }
     }
@@ -13,16 +15,16 @@ pipeline {
         success {
             emailext (
                 to: 'your_email@gmail.com',
-                subject: "SUCCESS: Jenkins Build ${env.JOB_NAME}",
-                body: "Build Successful. URL: ${env.BUILD_URL}"
+                subject: "SUCCESS: ${env.JOB_NAME}",
+                body: "Build Success: ${env.BUILD_URL}"
             )
         }
 
         failure {
             emailext (
                 to: 'your_email@gmail.com',
-                subject: "FAILED: Jenkins Build ${env.JOB_NAME}",
-                body: "Build Failed. URL: ${env.BUILD_URL}"
+                subject: "FAILED: ${env.JOB_NAME}",
+                body: "Build Failed: ${env.BUILD_URL}"
             )
         }
     }
