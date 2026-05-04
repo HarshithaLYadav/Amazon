@@ -1,31 +1,12 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-            steps {
-                dir('Amazon') {
-                    sh 'mvn clean package'
-                }
-            }
-        }
+post {
+    success {
+        mail to: 'harshithayadav809@gmail.com',
+             subject: 'SUCCESS',
+             body: "Build Passed: ${env.BUILD_URL}"
     }
-
-    post {
-        success {
-            emailext (
-                to: 'harshithayadav809@gmail.com',
-                subject: "SUCCESS: ${env.JOB_NAME}",
-                body: "Build Success: ${env.BUILD_URL}"
-            )
-        }
-
-        failure {
-            emailext (
-                to: 'harshithayadav809@gmail.com',
-                subject: "FAILED: ${env.JOB_NAME}",
-                body: "Build Failed: ${env.BUILD_URL}"
-            )
-        }
+    failure {
+        mail to: 'harshithayadav809@gmail.com',
+             subject: 'FAILED',
+             body: "Build Failed: ${env.BUILD_URL}"
     }
 }
