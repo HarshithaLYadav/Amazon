@@ -22,7 +22,7 @@ pipeline {
 
         failure {
             emailext (
-                to: 'your_email@gmail.com',
+                to: 'harshithayadav809@gmail.com',
                 subject: "FAILED: ${env.JOB_NAME}",
                 body: "Build Failed: ${env.BUILD_URL}"
             )
