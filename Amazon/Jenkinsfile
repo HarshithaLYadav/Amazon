@@ -1,12 +1,29 @@
-post {
-    success {
-        mail to: 'harshithayadav809@gmail.com',
-             subject: 'SUCCESS',
-             body: "Build Passed: ${env.BUILD_URL}"
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
     }
-    failure {
-        mail to: 'harshithayadav809@gmail.com',
-             subject: 'FAILED',
-             body: "Build Failed: ${env.BUILD_URL}"
+
+    post {
+        success {
+            emailext (
+                to: 'buildreports.abc.harshi@gmail.com',
+                subject: "SUCCESS: Jenkins Build ${env.JOB_NAME}",
+                body: "Build Successful. URL: ${env.BUILD_URL}"
+            )
+        }
+
+        failure {
+            emailext (
+                to: 'buildreports.abc.harshi@gmail.com',
+                subject: "FAILED: Jenkins Build ${env.JOB_NAME}",
+                body: "Build Failed. URL: ${env.BUILD_URL}"
+            )
+        }
     }
 }
